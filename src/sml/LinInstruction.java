@@ -7,6 +7,7 @@ package sml;
  */
 
 public class LinInstruction extends Instruction {
+	
 	private int register;
 	private int value;
 
@@ -30,4 +31,5 @@ public class LinInstruction extends Instruction {
 	public String toString() {
 		return super.toString() + " register " + register + " value is " + value;
 	}
+	
 }
