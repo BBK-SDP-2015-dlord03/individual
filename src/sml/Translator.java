@@ -37,36 +37,46 @@ public class Translator {
 			program = prog;
 			program.clear();
 
-			try {
-				line = sc.nextLine();
-			} catch (NoSuchElementException ioE) {
-				return false;
-			}
-
+			int lineNumber = 1;
 			// Each iteration processes line and reads the next line into line
-			while (line != null) {
+			while (sc.hasNextLine()) {
+				
+                line = sc.nextLine();
+                
 				// Store the label in label
 				String label = scan();
-
-				if (label.length() > 0) {
-					Instruction ins = getInstruction(label);
-					if (ins != null) {
-						labels.addLabel(label);
-						program.add(ins);
-					}
-				}
-
-				try {
-					line = sc.nextLine();
-				} catch (NoSuchElementException ioE) {
+				
+				if (label.length() == 0) {
+					System.err.println("Missing or invalid label at line " + lineNumber);
 					return false;
 				}
+				
+				if (labels.indexOf(label) != -1) {
+					System.err.println("Duplicate label " + label + " at line " + lineNumber);
+					return false;
+				}
+
+				Instruction ins = getInstruction(label);
+				if (ins == null) {
+					System.err.println("Problem reading instruction with label " + label + " at line " + lineNumber);
+					return false;
+				}
+				
+				labels.addLabel(label);
+				program.add(ins);
+				
+				lineNumber++;
+				
 			}
 		} catch (IOException ioE) {
+			
 			System.out.println("File: IO error " + ioE.getMessage());
 			return false;
+			
 		}
+		
 		return true;
+		
 	}
 
 	// line should consist of an MML instruction, with its label already

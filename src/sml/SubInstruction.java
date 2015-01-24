@@ -8,7 +8,6 @@ public class SubInstruction extends Instruction {
 
 	public SubInstruction(String l, String op) {
 		super(l, op);
-		// TODO Auto-generated constructor stub
 	}
 
 	public SubInstruction(String label, int result, int op1, int op2) {

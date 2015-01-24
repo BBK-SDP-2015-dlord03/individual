@@ -34,9 +34,18 @@ public class Machine {
 
 	public static void main(String[] args) {
 
+		if (args.length != 1) {
+			System.out.println("Please specify name of SML program file");
+			return;
+		}
+
+		String smlFile = args[0];
 		Machine m = new Machine();
-		Translator t = new Translator(args[0]);
-		t.readAndTranslate(m.getLabels(), m.getProg());
+		Translator t = new Translator(smlFile);
+		if (!t.readAndTranslate(m.getLabels(), m.getProg())) {
+			System.err.println("Problem reading program file " + smlFile);
+			return;
+		}
 
 		System.out.println("Here is the program; it has " + m.getProg().size() + " instructions.");
 		System.out.println(m);
