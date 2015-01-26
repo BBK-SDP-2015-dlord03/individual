@@ -37,8 +37,8 @@ public class LinInstruction extends Instruction {
 	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 2);
-		this.register = parseInt(params[0]);
-		this.value = parseInt(params[1]);
+		this.register = parseIntParameter(params[0]);
+		this.value = parseIntParameter(params[1]);
 	}
 
 }

@@ -40,9 +40,9 @@ public class AddInstruction extends Instruction {
 	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 3);
-		this.result = parseInt(params[0]);
-		this.op1 = parseInt(params[1]);
-		this.op2 = parseInt(params[2]);
+		this.result = parseIntParameter(params[0]);
+		this.op1 = parseIntParameter(params[1]);
+		this.op2 = parseIntParameter(params[2]);
 	}
 
 }

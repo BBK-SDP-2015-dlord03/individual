@@ -2,6 +2,8 @@ package sml;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -47,13 +49,15 @@ public class Translator {
 				String label = scan();
 
 				if (label.length() == 0) {
-					System.err.println("Missing or invalid label at line " + lineNumber);
+					System.err.println("Error whilst reading program: Missing or invalid label at line "
+							+ lineNumber);
 					return false;
 				}
 
 				int existingIndex = labels.indexOf(label);
 				if (existingIndex != -1) {
-					System.err.println("Duplicate label " + label + " at lines " + existingIndex + " and " + (lineNumber + 1));
+					System.err.println("Error whilst reading program: Duplicate label " + label + " at lines "
+							+ existingIndex + " and " + (lineNumber + 1));
 					return false;
 				}
 
@@ -70,7 +74,7 @@ public class Translator {
 			}
 		} catch (IOException ioE) {
 
-			System.err.println("File: IO error " + ioE.getMessage());
+			System.err.println("Error reading program: IO error " + ioE.getMessage());
 			return false;
 
 		}
@@ -89,31 +93,40 @@ public class Translator {
 
 		String ins = scan();
 		String[] params = split();
-		try {
-			switch (ins) {
-			case "add":
-				return new AddInstruction(label, params);
-			case "sub":
-				return new SubInstruction(label, params);
-			case "mul":
-				return new MulInstruction(label, params);
-			case "div":
-				return new DivInstruction(label, params);
-			case "out":
-				return new OutInstruction(label, params);
-			case "lin":
-				return new LinInstruction(label, params);
-			case "bnz":
-				return new BnzInstruction(label, params);
-			}
-		} catch (Exception e) {
-			System.err.println("Error processing instruction " + ins + " at label " + label + ": " + e.getMessage());
-			return null;
-		}
-		System.err.println("Unknown operation " + ins + " at label " + label);
-		return null;
+		return createInstruction(ins, label, params);
+
 	}
 
+	private Instruction createInstruction(String ins, String label, String[] params) {
+		
+		if (ins == null || ins.length() == 0) return null;
+		
+		String className = new StringBuilder()
+			.append("sml.")
+			.append(ins.substring(0, 1).toUpperCase())
+			.append(ins.substring(1))
+			.append("Instruction").toString();
+		
+		try {
+			Class<?> instructionClass = Class.forName(className);
+			Constructor<?> instructionConstructor = instructionClass.getDeclaredConstructor(new Class[] {String.class, String[].class});
+			return (Instruction) instructionConstructor.newInstance(label, params);
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error whilst creating instruction " + ins + " at label " + label + ": Unknown instruction");
+			return null;
+		} catch (IllegalArgumentException e) {
+			System.err.println("Error whilst creating instruction " + ins + " at label " + label + ": " + e.getMessage());
+			return null;
+		} catch (InvocationTargetException e) {
+			System.err.println("Error whilst creating instruction " + ins + " at label " + label + ": " + e.getTargetException().getMessage());
+			return null;
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException e) {
+			System.err.println("Internal error whilst creating instruction " + ins + " at label " + label);
+			return null;
+		}
+		
+	}
+	
 	/*
 	 * Return the first word of line and remove it from line. If there is no
 	 * word, return ""

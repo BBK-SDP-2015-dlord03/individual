@@ -58,11 +58,11 @@ public abstract class Instruction {
 
 	// Utility helper method for parsing integer parameters.
 	
-	protected static int parseInt(String string) {
+	protected static int parseIntParameter(String string) {
 		try {
 			return Integer.parseInt(string);
 		} catch (NumberFormatException e) {
-			return Integer.MAX_VALUE;
+			throw new IllegalArgumentException("Invalid parameter '" + string + "'");
 		}
 	}
 

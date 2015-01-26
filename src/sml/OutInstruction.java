@@ -30,7 +30,7 @@ public class OutInstruction extends Instruction {
 	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 1);
-		this.op1 = parseInt(params[0]);
+		this.op1 = parseIntParameter(params[0]);
 	}
 
 }

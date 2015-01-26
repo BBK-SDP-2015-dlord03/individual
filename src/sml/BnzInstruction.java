@@ -36,7 +36,7 @@ public class BnzInstruction extends Instruction {
 	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 2);
-		this.op1 = parseInt(params[0]);
+		this.op1 = parseIntParameter(params[0]);
 		this.op2 = params[1];
 	}
 
