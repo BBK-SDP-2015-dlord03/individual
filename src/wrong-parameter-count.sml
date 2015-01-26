@@ -1,4 +1,4 @@
-f0 lin 20 6
+f0 lin 20
 f1 lin 21 1
 f2 lin 22 1
 f3 mul 21 21

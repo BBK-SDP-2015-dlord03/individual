@@ -51,8 +51,9 @@ public class Translator {
 					return false;
 				}
 				
-				if (labels.indexOf(label) != -1) {
-					System.err.println("Duplicate label " + label + " at line " + lineNumber);
+				int existingIndex = labels.indexOf(label);
+				if (existingIndex != -1) {
+					System.err.println("Duplicate label " + label + " at lines " + existingIndex + " and " + (lineNumber + 1));
 					return false;
 				}
 
@@ -70,7 +71,7 @@ public class Translator {
 			}
 		} catch (IOException ioE) {
 			
-			System.out.println("File: IO error " + ioE.getMessage());
+			System.err.println("File: IO error " + ioE.getMessage());
 			return false;
 			
 		}
@@ -128,6 +129,7 @@ public class Translator {
 			return new BnzInstruction(label, s1, l1);
 		}
 
+		System.err.println("Unknown operation " + ins + " at label " + label);
 		return null;
 	}
 

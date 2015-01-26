@@ -13,15 +13,14 @@ public class TranslatorTest {
 
 	private Labels labels;
 	private ArrayList<Instruction> program;
-	
-	
+
 	@Before
 	public void initialise() {
 		labels = new Labels();
 		program = new ArrayList<>();
-		
+
 	}
-	
+
 	@Test
 	public void succeedFactorial() {
 		Translator t = new Translator("code.sml");

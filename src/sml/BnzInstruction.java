@@ -30,4 +30,15 @@ public class BnzInstruction extends Instruction {
 		return super.toString() + " if register " + op1 + " is not zero jump to " + op2;
 	}
 
+	@Override
+	protected String getOpCode() {
+		return "bnz";
+	}
+
+	@Override
+	protected void setParameters(String... params) {
+		// TODO Auto-generated method stub
+	}
+
+
 }

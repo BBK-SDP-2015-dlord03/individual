@@ -29,4 +29,14 @@ public class SubInstruction extends Instruction {
 		return super.toString() + " register " + op1 + " - register " + op2 + " to register " + result;
 	}
 
+	@Override
+	protected String getOpCode() {
+		return "sub";
+	}
+
+	@Override
+	protected void setParameters(String... params) {
+		// TODO Auto-generated method stub
+	}
+
 }

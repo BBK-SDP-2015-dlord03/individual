@@ -29,4 +29,14 @@ public class DivInstruction extends Instruction {
 		return super.toString() + " register " + op1 + " / register " + op2 + " to register " + result;
 	}
 
+	@Override
+	protected String getOpCode() {
+		return "div";
+	}
+
+	@Override
+	protected void setParameters(String... params) {
+		// TODO Auto-generated method stub
+	}
+
 }

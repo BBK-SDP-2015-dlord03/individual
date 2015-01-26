@@ -34,4 +34,15 @@ public class AddInstruction extends Instruction {
 	public String toString() {
 		return super.toString() + " register " + op1 + " + register " + op2 + " to register " + result;
 	}
+
+	@Override
+	protected String getOpCode() {
+		return "add";
+	}
+
+	@Override
+	protected void setParameters(String... params) {
+		// TODO Auto-generated method stub
+	}
+
 }

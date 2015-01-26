@@ -31,5 +31,15 @@ public class LinInstruction extends Instruction {
 	public String toString() {
 		return super.toString() + " register " + register + " value is " + value;
 	}
-	
+
+	@Override
+	protected String getOpCode() {
+		return "lin";
+	}
+
+	@Override
+	protected void setParameters(String... params) {
+		// TODO Auto-generated method stub
+	}
+
 }

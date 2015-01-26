@@ -23,4 +23,14 @@ public class OutInstruction extends Instruction {
 		return super.toString() + " register " + op1;
 	}
 
+	@Override
+	protected String getOpCode() {
+		return "out";
+	}
+
+	@Override
+	protected void setParameters(String... params) {
+		// TODO Auto-generated method stub
+	}
+
 }
