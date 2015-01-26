@@ -40,17 +40,17 @@ public class Translator {
 			int lineNumber = 1;
 			// Each iteration processes line and reads the next line into line
 			while (sc.hasNextLine()) {
-				
-                line = sc.nextLine();
-                
+
+				line = sc.nextLine();
+
 				// Store the label in label
 				String label = scan();
-				
+
 				if (label.length() == 0) {
 					System.err.println("Missing or invalid label at line " + lineNumber);
 					return false;
 				}
-				
+
 				int existingIndex = labels.indexOf(label);
 				if (existingIndex != -1) {
 					System.err.println("Duplicate label " + label + " at lines " + existingIndex + " and " + (lineNumber + 1));
@@ -59,76 +59,57 @@ public class Translator {
 
 				Instruction ins = getInstruction(label);
 				if (ins == null) {
-					System.err.println("Problem reading instruction with label " + label + " at line " + lineNumber);
 					return false;
 				}
-				
+
 				labels.addLabel(label);
 				program.add(ins);
-				
+
 				lineNumber++;
-				
+
 			}
 		} catch (IOException ioE) {
-			
+
 			System.err.println("File: IO error " + ioE.getMessage());
 			return false;
-			
+
 		}
-		
+
 		return true;
-		
+
 	}
 
 	// line should consist of an MML instruction, with its label already
 	// removed. Translate line into an instruction with label label
 	// and return the instruction
 	public Instruction getInstruction(String label) {
-		
-		int s1; // Possible operands of the instruction
-		int s2;
-		int r;
-		int x;
-		String l1;
 
 		if (line.equals(""))
 			return null;
 
 		String ins = scan();
-		switch (ins) {
-		case "add":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new AddInstruction(label, r, s1, s2);
-		case "sub":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new SubInstruction(label, r, s1, s2);
-		case "mul":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new MulInstruction(label, r, s1, s2);
-		case "div":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new DivInstruction(label, r, s1, s2);
-		case "out":
-			s1 = scanInt();
-			return new OutInstruction(label, s1);
-		case "lin":
-			r = scanInt();
-			s1 = scanInt();
-			return new LinInstruction(label, r, s1);
-		case "bnz":
-			s1 = scanInt();
-			l1 = scan();
-			return new BnzInstruction(label, s1, l1);
+		String[] params = split();
+		try {
+			switch (ins) {
+			case "add":
+				return new AddInstruction(label, params);
+			case "sub":
+				return new SubInstruction(label, params);
+			case "mul":
+				return new MulInstruction(label, params);
+			case "div":
+				return new DivInstruction(label, params);
+			case "out":
+				return new OutInstruction(label, params);
+			case "lin":
+				return new LinInstruction(label, params);
+			case "bnz":
+				return new BnzInstruction(label, params);
+			}
+		} catch (Exception e) {
+			System.err.println("Error processing instruction " + ins + " at label " + label + ": " + e.getMessage());
+			return null;
 		}
-
 		System.err.println("Unknown operation " + ins + " at label " + label);
 		return null;
 	}
@@ -151,18 +132,7 @@ public class Translator {
 		return word;
 	}
 
-	// Return the first word of line as an integer. If there is
-	// any error, return the maximum int
-	private int scanInt() {
-		String word = scan();
-		if (word.length() == 0) {
-			return Integer.MAX_VALUE;
-		}
-
-		try {
-			return Integer.parseInt(word);
-		} catch (NumberFormatException e) {
-			return Integer.MAX_VALUE;
-		}
+	private String[] split() {
+		return line.trim().split("\\s");
 	}
 }

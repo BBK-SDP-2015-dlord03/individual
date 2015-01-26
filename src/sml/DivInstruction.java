@@ -10,11 +10,8 @@ public class DivInstruction extends Instruction {
 		super(l, op);
 	}
 
-	public DivInstruction(String label, int result, int op1, int op2) {
-		this(label, "div");
-		this.result = result;
-		this.op1 = op1;
-		this.op2 = op2;
+	public DivInstruction(String label, String... params) {
+		super(label, params);
 	}
 
 	@Override
@@ -36,7 +33,10 @@ public class DivInstruction extends Instruction {
 
 	@Override
 	protected void setParameters(String... params) {
-		// TODO Auto-generated method stub
+		assertCorrectParameterCount(params, 3);
+		this.result = parseInt(params[0]);
+		this.op1 = parseInt(params[1]);
+		this.op2 = parseInt(params[2]);
 	}
 
 }

@@ -7,7 +7,7 @@ package sml;
  */
 
 public abstract class Instruction {
-	
+
 	protected String label;
 	protected String opcode;
 
@@ -15,10 +15,12 @@ public abstract class Instruction {
 	// (op must be an operation of the language)
 
 	public Instruction(String l, String op) {
-		if (!op.equals(getOpCode()))
-			throw new IllegalArgumentException("Invalid op code " + op);
+		String opcode = getOpCode();
+		if (!op.equals(opcode)) {
+			throw new IllegalArgumentException("Invalid op code '" + op + "' (expected '" + opcode + "')");
+		}
 		this.label = l;
-		this.opcode = op;
+		this.opcode = opcode;
 	}
 
 	public Instruction(String l, String... params) {
@@ -37,13 +39,31 @@ public abstract class Instruction {
 	// Execute this instruction on machine m.
 
 	public abstract void execute(Machine m);
-	
+
 	// Return the opcode for this instruction
-	
+
 	protected abstract String getOpCode();
-	
+
 	// Assign the parameters. Throw an exception for wrong values.
-	
+
 	protected abstract void setParameters(String... params);
+
+	// Utility helper method for checking parameter counts.
 	
+	protected static void assertCorrectParameterCount(String[] params, int count) {
+		if (params.length != count) {
+			throw new IllegalArgumentException("Incorrect number of arguments");
+		}
+	}
+
+	// Utility helper method for parsing integer parameters.
+	
+	protected static int parseInt(String string) {
+		try {
+			return Integer.parseInt(string);
+		} catch (NumberFormatException e) {
+			return Integer.MAX_VALUE;
+		}
+	}
+
 }
