@@ -47,12 +47,38 @@ public abstract class Instruction {
 	// Assign the parameters. Throw an exception for wrong values.
 
 	protected abstract void setParameters(String... params);
+	
+	
+	// Safe way to get a machine register from machines with differing register counts.
+	
+	protected static int getMachineRegister(Machine m, int i) {
+		try {
+			return m.getRegisters().getRegister(i);
+		} catch (Exception e) {
+			System.err.format("Error getting register %d: %s%n", i, e.getMessage());
+			return 0;
+		}
+		
+	}
+
+	// Safe way to set a machine register from machines with differing register
+	// counts.
+
+	protected static void setMachineRegister(Machine m, int i, int v) {
+		try {
+			m.getRegisters().setRegister(i, v);
+		} catch (Exception e) {
+			System.err.format("Error setting register %d to %d: %s%n", i, v, e.getMessage());
+		}
+	}
 
 	// Utility helper method for checking parameter counts.
 	
-	protected static void assertCorrectParameterCount(String[] params, int count) {
-		if (params.length != count) {
-			throw new IllegalArgumentException("Incorrect number of arguments");
+	protected static void assertCorrectParameterCount(String[] params, int expectedCount) {
+		int actualCount = params.length;
+		if (actualCount != expectedCount) {
+			String message = String.format("Incorrect number of arguments (expected %d, received %d)", expectedCount, actualCount);
+			throw new IllegalArgumentException(message);
 		}
 	}
 
@@ -62,7 +88,7 @@ public abstract class Instruction {
 		try {
 			return Integer.parseInt(string);
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Invalid parameter '" + string + "'");
+			throw new IllegalArgumentException("Invalid integer parameter '" + string + "'");
 		}
 	}
 

@@ -48,15 +48,13 @@ public class Translator {
 				String label = scan();
 
 				if (label.length() == 0) {
-					System.err.println("Error whilst reading program: Missing or invalid label at line "
-							+ lineNumber);
+					System.err.format("Error whilst reading program: Missing or invalid label at line %d\n", lineNumber);
 					return false;
 				}
 
 				int existingIndex = labels.indexOf(label);
 				if (existingIndex != -1) {
-					System.err.println("Error whilst reading program: Duplicate label " + label + " at lines "
-							+ existingIndex + " and " + (lineNumber + 1));
+					System.err.format("Error whilst reading program: Duplicate label '%s' at lines %d and %d.\n", label, existingIndex + 1, lineNumber);
 					return false;
 				}
 
@@ -71,9 +69,10 @@ public class Translator {
 				lineNumber++;
 
 			}
+			
 		} catch (IOException ioE) {
 
-			System.err.println("Error reading program: IO error " + ioE.getMessage());
+			System.err.format("Error reading program: IO error %s.\n", ioE.getMessage());
 			return false;
 
 		}
@@ -96,9 +95,19 @@ public class Translator {
 
 	}
 
-	private Instruction createInstruction(String ins, String label, String[] params) {
+	/*
+	 * Create an Instruction via reflection. Returns a valid
+	 * <code>Instruction</code> object or <code>null</code> if errors are
+	 * encountered. Any errors are reported to the standard error output stream.
+	 */
+	private static Instruction createInstruction(String ins, String label, String[] params) {
 		
-		if (ins == null || ins.length() == 0) return null;
+		String errorMessage = String.format("Error whilst creating instruction '%s' with label '%s'", ins, label);
+
+		if (ins == null || ins.length() < 2) {
+			System.err.println(String.format("%s: %s.", errorMessage, "Invalid instruction name"));
+			return null;
+		}
 		
 		String className = new StringBuilder()
 			.append("sml.")
@@ -107,20 +116,30 @@ public class Translator {
 			.append("Instruction").toString();
 		
 		try {
+			
 			Class<?> instructionClass = Class.forName(className);
-			Constructor<?> instructionConstructor = instructionClass.getDeclaredConstructor(new Class[] {String.class, String[].class});
+			Class<?>[] constructorParams = new Class[] {String.class, String[].class};
+			Constructor<?> instructionConstructor = instructionClass.getDeclaredConstructor(constructorParams);
 			return (Instruction) instructionConstructor.newInstance(label, params);
+			
 		} catch (ClassNotFoundException e) {
-			System.err.println("Error whilst creating instruction " + ins + " at label " + label + ": Unknown instruction");
+			
+			System.err.println(String.format("%s: %s.", errorMessage, "Unknown instruction"));
 			return null;
+			
 		} catch (IllegalArgumentException e) {
-			System.err.println("Error whilst creating instruction " + ins + " at label " + label + ": " + e.getMessage());
+			
+			System.err.println(String.format("%s: %s.", errorMessage, e.getMessage()));
 			return null;
+			
 		} catch (InvocationTargetException e) {
-			System.err.println("Error whilst creating instruction " + ins + " at label " + label + ": " + e.getTargetException().getMessage());
+			
+			System.err.println(String.format("%s: %s.", errorMessage, e.getTargetException().getMessage()));
 			return null;
+			
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException e) {
-			System.err.println("Internal error whilst creating instruction " + ins + " at label " + label);
+			
+			System.err.println(String.format("%s: %s.", errorMessage, e.getMessage()));
 			return null;
 		}
 		
@@ -131,6 +150,7 @@ public class Translator {
 	 * word, return ""
 	 */
 	private String scan() {
+		
 		line = line.trim();
 		if (line.length() == 0)
 			return "";
@@ -139,12 +159,18 @@ public class Translator {
 		while (i < line.length() && line.charAt(i) != ' ' && line.charAt(i) != '\t') {
 			i = i + 1;
 		}
+		
 		String word = line.substring(0, i);
 		line = line.substring(i);
 		return word;
 	}
 
+	/*
+	 * Split a string into an array of strings delimiting on whitespace once any
+	 * leading and trailing whitespace is removed.
+	 */
 	private String[] split() {
 		return line.trim().split("\\s");
 	}
+	
 }

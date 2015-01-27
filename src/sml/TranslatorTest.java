@@ -2,6 +2,7 @@ package sml;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
@@ -18,7 +19,6 @@ public class TranslatorTest {
 	public void initialise() {
 		labels = new Labels();
 		program = new ArrayList<>();
-
 	}
 
 	@Test
@@ -69,5 +69,45 @@ public class TranslatorTest {
 		Translator t = new Translator("missing-file.sml");
 		assertFalse(t.readAndTranslate(labels, program));
 	}
-
+	
+	@Test
+	public void failToCreateShortInstruction() {
+		assertNull(createInstruction("x", "f0", null));
+	}
+	
+	@Test
+	public void failToCreateBadInstruction() {
+		assertNull(createInstruction("mod", "f0", null));
+	}
+	
+	@Test
+	public void failToCreateNullInstruction() {
+		assertNull(createInstruction(null, "f0", null));
+	}
+	
+	@Test
+	public void failToCreateEmptyInstruction() {
+		assertNull(createInstruction("", "f0", null));
+	}
+	
+	@Test
+	public void succeedToCreateMulInstruction() {
+		assertNotNull(createInstruction("mul", "f2", new String[] {"1", "2", "3"}));
+	}
+	
+	/*
+	 * Calls the static Translator.createInstruction() method by first making it non-private.
+	 */
+	private static Object createInstruction(String instruction, String label, String[] params) {
+		try {
+			Class<?>[] methodParams = new Class[] {String.class, String.class, String[].class};
+			Method m = Translator.class.getDeclaredMethod("createInstruction", methodParams);
+			m.setAccessible(true);
+			return m.invoke(null, instruction, label, params);
+		} catch (Exception e) {
+			throw new AssertionError(e);
+		}
+		
+	}
+	
 }
