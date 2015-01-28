@@ -120,6 +120,11 @@ public class Translator {
 			Class<?> instructionClass = Class.forName(className);
 			Class<?>[] constructorParams = new Class[] {String.class, String[].class};
 			Constructor<?> instructionConstructor = instructionClass.getDeclaredConstructor(constructorParams);
+			Object instruction = instructionConstructor.newInstance(label, params);
+			if (!(instruction instanceof Instruction)) {
+				System.err.println(String.format("%s: %s.", errorMessage, "Invalid instruction class"));
+				return null;
+			}
 			return (Instruction) instructionConstructor.newInstance(label, params);
 			
 		} catch (ClassNotFoundException e) {
@@ -137,7 +142,7 @@ public class Translator {
 			System.err.println(String.format("%s: %s.", errorMessage, e.getTargetException().getMessage()));
 			return null;
 			
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException e) {
+		} catch (ReflectiveOperationException e) {
 			
 			System.err.println(String.format("%s: %s.", errorMessage, e.getMessage()));
 			return null;

@@ -9,8 +9,8 @@ import org.junit.Test;
 
 public class InstructionTest {
 
-	Machine machine;
-	List<Instruction> program;
+	private Machine machine;
+	private List<Instruction> program;
 
 	@Before
 	public void setup() {
@@ -93,6 +93,12 @@ public class InstructionTest {
 		assertRegisterEquals(13, 32);
 	}
 
+	@Test
+	public void setInvalidRegisterValue() {
+		program.add(new LinInstruction("f0", new String[] { "65", "1" }));
+		machine.execute();
+	}
+	
 	private void assertRegisterEquals(int register, int expected) {
 		assertEquals(expected, machine.getRegisters().getRegister(register));
 	}

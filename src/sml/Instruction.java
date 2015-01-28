@@ -54,11 +54,14 @@ public abstract class Instruction {
 	protected static int getMachineRegister(Machine m, int i) {
 		try {
 			return m.getRegisters().getRegister(i);
+		} catch (IndexOutOfBoundsException e) {
+			System.err.format("Invalid register number %d%n", i);
+			return 0;
 		} catch (Exception e) {
 			System.err.format("Error getting register %d: %s%n", i, e.getMessage());
 			return 0;
 		}
-		
+
 	}
 
 	// Safe way to set a machine register from machines with differing register
@@ -67,6 +70,8 @@ public abstract class Instruction {
 	protected static void setMachineRegister(Machine m, int i, int v) {
 		try {
 			m.getRegisters().setRegister(i, v);
+		} catch (IndexOutOfBoundsException e) {
+			System.err.format("Invalid register number %d%n", i);
 		} catch (Exception e) {
 			System.err.format("Error setting register %d to %d: %s%n", i, v, e.getMessage());
 		}

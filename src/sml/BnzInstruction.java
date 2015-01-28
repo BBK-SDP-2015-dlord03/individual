@@ -15,11 +15,14 @@ public class BnzInstruction extends Instruction {
 
 	@Override
 	public void execute(Machine m) {
-		int value1 = m.getRegisters().getRegister(op1);
+		int value1 = getMachineRegister(m, op1);
 		if (value1 != 1) {
 			int pc = m.getLabels().indexOf(op2);
-			if (pc != -1)
-				m.setPc(pc);
+			if (pc == -1) {
+				System.err.format("Invalid label '%s'%n", value1);
+				return;
+			}
+			m.setPc(pc);
 		}
 	}
 	
