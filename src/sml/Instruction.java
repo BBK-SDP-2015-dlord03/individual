@@ -55,7 +55,7 @@ public abstract class Instruction {
 		try {
 			return m.getRegisters().getRegister(i);
 		} catch (IndexOutOfBoundsException e) {
-			System.err.format("Invalid register number %d%n", i);
+			System.err.format("Invalid register number %d.%n", i);
 			return 0;
 		} catch (Exception e) {
 			System.err.format("Error getting register %d: %s%n", i, e.getMessage());
@@ -71,7 +71,7 @@ public abstract class Instruction {
 		try {
 			m.getRegisters().setRegister(i, v);
 		} catch (IndexOutOfBoundsException e) {
-			System.err.format("Invalid register number %d%n", i);
+			System.err.format("Invalid register number %d.%n", i);
 		} catch (Exception e) {
 			System.err.format("Error setting register %d to %d: %s%n", i, v, e.getMessage());
 		}
