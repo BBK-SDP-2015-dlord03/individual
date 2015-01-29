@@ -1,11 +1,9 @@
 package sml;
 
 /**
- * This class ....
- * 
- * @author someone
+ * An SML instruction which when given two parameters x and r will store integer
+ * x in register r.
  */
-
 public class LinInstruction extends Instruction {
 	
 	private int register;

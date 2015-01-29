@@ -1,5 +1,10 @@
 package sml;
 
+/**
+ * An SML instruction which when given three parameters s1, s2 and r will
+ * multiply the contents of registers s1 and s2 and store the result in register
+ * r.
+ */
 public class MulInstruction extends Instruction {
 
 	private int result;

@@ -1,5 +1,10 @@
 package sml;
 
+/**
+ * An SML instruction which when given two parameters s1 and L2 will, if the
+ * contents of register s1 is not zero, make the statement labelled L2 the next
+ * one to execute.
+ */
 public class BnzInstruction extends Instruction {
 
 	private int op1;

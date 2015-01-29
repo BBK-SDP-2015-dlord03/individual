@@ -1,11 +1,9 @@
 package sml;
 
 /**
- * This class ....
- * 
- * @author someone
+ * An SML instruction which when given three parameters s1, s2 and r will add
+ * the contents of registers s1 and s2 and store the result in register r.
  */
-
 public class AddInstruction extends Instruction {
 
 	private int result;

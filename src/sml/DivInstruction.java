@@ -1,5 +1,10 @@
 package sml;
 
+/**
+ * An SML instruction which when given three parameters s1, s2 and r will divide
+ * (Java integer division) the contents of register s1 by the contents of
+ * register s2 and store the result in register r.
+ */
 public class DivInstruction extends Instruction {
 
 	private int result;

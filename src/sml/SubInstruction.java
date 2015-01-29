@@ -1,5 +1,10 @@
 package sml;
 
+/**
+ * An SML instruction which when given three parameters s1, s2 and r will
+ * subtract the contents of register s2 from the contents of s1 and store the
+ * result in register r.
+ */
 public class SubInstruction extends Instruction {
 
 	private int result;

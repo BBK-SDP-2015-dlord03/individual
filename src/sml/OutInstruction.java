@@ -1,5 +1,9 @@
 package sml;
 
+/**
+ * An SML instruction which when given one parameter s1 will print the contents
+ * of register s1 on the Java console (using <code>println</code>).
+ */
 public class OutInstruction extends Instruction {
 
 	private int op1;
