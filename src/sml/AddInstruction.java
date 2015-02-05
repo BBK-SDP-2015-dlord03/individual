@@ -23,7 +23,6 @@ public class AddInstruction extends Instruction {
 		int value1 = getMachineRegister(m, op1);
 		int value2 = getMachineRegister(m, op2);
 		setMachineRegister(m, result, value1 + value2);
-
 	}
 
 	@Override

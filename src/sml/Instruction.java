@@ -48,7 +48,6 @@ public abstract class Instruction {
 
 	protected abstract void setParameters(String... params);
 	
-	
 	// Safe way to get a machine register from machines with differing register counts.
 	
 	protected static int getMachineRegister(Machine m, int i) {
