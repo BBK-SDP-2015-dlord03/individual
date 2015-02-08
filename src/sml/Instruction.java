@@ -50,7 +50,9 @@ public abstract class Instruction {
 
 	// Assign the parameters. Throw an exception for wrong values.
 
-	protected abstract void setParameters(String... params);
+	protected void setParameters(String... params){
+		// Default version does nothing. 
+	}
 	
 	// Safe way to get a machine register from machines with differing register counts.
 	
