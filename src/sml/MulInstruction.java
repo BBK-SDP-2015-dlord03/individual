@@ -32,11 +32,6 @@ public class MulInstruction extends Instruction {
 	}
 
 	@Override
-	protected String getOpCode() {
-		return "mul";
-	}
-
-	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 3);
 		this.result = parseIntParameter(params[0]);

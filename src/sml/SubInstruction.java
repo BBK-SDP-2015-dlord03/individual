@@ -32,11 +32,6 @@ public class SubInstruction extends Instruction {
 	}
 
 	@Override
-	protected String getOpCode() {
-		return "sub";
-	}
-
-	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 3);
 		this.result = parseIntParameter(params[0]);

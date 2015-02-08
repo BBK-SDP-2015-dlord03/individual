@@ -37,11 +37,6 @@ public class BnzInstruction extends Instruction {
 	}
 
 	@Override
-	protected String getOpCode() {
-		return "bnz";
-	}
-
-	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 2);
 		this.op1 = parseIntParameter(params[0]);

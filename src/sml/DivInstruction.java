@@ -32,11 +32,6 @@ public class DivInstruction extends Instruction {
 	}
 
 	@Override
-	protected String getOpCode() {
-		return "div";
-	}
-
-	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 3);
 		this.result = parseIntParameter(params[0]);

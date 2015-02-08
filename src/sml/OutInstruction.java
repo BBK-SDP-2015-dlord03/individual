@@ -27,11 +27,6 @@ public class OutInstruction extends Instruction {
 	}
 
 	@Override
-	protected String getOpCode() {
-		return "out";
-	}
-
-	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 1);
 		this.op1 = parseIntParameter(params[0]);

@@ -28,11 +28,6 @@ public class LinInstruction extends Instruction {
 	}
 
 	@Override
-	protected String getOpCode() {
-		return "lin";
-	}
-
-	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 2);
 		this.register = parseIntParameter(params[0]);

@@ -31,11 +31,6 @@ public class AddInstruction extends Instruction {
 	}
 
 	@Override
-	protected String getOpCode() {
-		return "add";
-	}
-
-	@Override
 	protected void setParameters(String... params) {
 		assertCorrectParameterCount(params, 3);
 		this.result = parseIntParameter(params[0]);

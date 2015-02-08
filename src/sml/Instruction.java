@@ -42,7 +42,11 @@ public abstract class Instruction {
 
 	// Return the opcode for this instruction
 
-	protected abstract String getOpCode();
+	private String getOpCode() {
+		String className = this.getClass().getSimpleName().toLowerCase();
+		int classNameLength = className.length();
+		return className.substring(0, classNameLength < 3 ? classNameLength : 3);
+	}
 
 	// Assign the parameters. Throw an exception for wrong values.
 
