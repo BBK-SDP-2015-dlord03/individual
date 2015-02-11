@@ -20,7 +20,7 @@ public abstract class Instruction {
 			throw new IllegalArgumentException("Invalid op code '" + op + "' (expected '" + opcode + "')");
 		}
 		this.label = l;
-		this.opcode = opcode;
+		this.opcode = op;
 	}
 
 	public Instruction(String l, String... params) {
