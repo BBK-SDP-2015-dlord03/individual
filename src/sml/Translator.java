@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
- * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
+ * The translator of a <b>S</b><b>M</b><b>L</b> program.
  */
 public class Translator {
 
