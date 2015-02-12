@@ -15,6 +15,13 @@ public class DivInstruction extends Instruction {
 		super(l, op);
 	}
 
+	public DivInstruction(String label, int result, int op1, int op2) {
+		this(label, "div");
+		this.result = result;
+		this.op1 = op1;
+		this.op2 = op2;
+	}
+
 	public DivInstruction(String label, String... params) {
 		super(label, params);
 	}

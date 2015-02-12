@@ -14,6 +14,12 @@ public class BnzInstruction extends Instruction {
 		super(l, op);
 	}
 
+	public BnzInstruction(String label, int op1, String op2) {
+		this(label, "bnz");
+		this.op1 = op1;
+		this.op2 = op2;
+	}
+
 	public BnzInstruction(String label, String... params) {
 		super(label, params);
 	}

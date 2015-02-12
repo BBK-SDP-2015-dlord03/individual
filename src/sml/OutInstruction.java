@@ -12,6 +12,11 @@ public class OutInstruction extends Instruction {
 		super(l, op);
 	}
 
+	public OutInstruction(String label, int op1) {
+		this(label, "out");
+		this.op1 = op1;
+	}
+	
 	public OutInstruction(String label, String... params) {
 		super(label, params);
 	}
