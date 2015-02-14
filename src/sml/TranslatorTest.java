@@ -102,6 +102,7 @@ public class TranslatorTest {
 	 */
 	private static Object createInstruction(String instruction, String label, String[] params) {
 		try {
+			
 			Class<?>[] methodParams = new Class[] {String.class, String.class, String[].class};
 			Method m = Translator.class.getDeclaredMethod("createInstruction", methodParams);
 			m.setAccessible(true);

@@ -89,9 +89,9 @@ public class Translator {
 		if (line.equals(""))
 			return null;
 
-		String ins = scan();
-		String[] params = split();
-		return createInstruction(ins, label, params);
+		String instructionName = scan();
+		String[] instructionParams = line.trim().split("\\s");
+		return createInstruction(instructionName, label, instructionParams);
 
 	}
 
@@ -102,52 +102,69 @@ public class Translator {
 	 */
 	private static Instruction createInstruction(String ins, String label, String[] params) {
 		
+		// Base errorMessage
 		String errorMessage = String.format("Error whilst creating instruction '%s' with label '%s'", ins, label);
 
+		// We must have a viable instruction name passed in.
 		if (ins == null || ins.length() < 2) {
 			System.err.println(String.format("%s: %s.", errorMessage, "Invalid instruction name"));
 			return null;
 		}
 		
+		// We need to derive an Instruction class name based on the accepted naming convention.
 		String className = new StringBuilder()
-			.append("sml.")
+			.append(Instruction.class.getPackage().getName())
+			.append(".")
 			.append(ins.substring(0, 1).toUpperCase())
 			.append(ins.substring(1))
 			.append("Instruction").toString();
 		
+		// Get the typed parameters
+		Object[] typedParameters = getCoercedParameters(label, params);
+		// Get the classes of the typed parameters.
+		Class<?>[] paramTypes = new Class[typedParameters.length];
+		for (int i = 0; i < typedParameters.length; i++) {
+			paramTypes[i] = getType(typedParameters[i]);
+		}
+		
 		try {
 			
+			// Get the class for the specified instruction.
 			Class<?> instructionClass = Class.forName(className);
-			Class<?>[] constructorParams = new Class[] {String.class, String[].class};
-			Constructor<?> instructionConstructor = instructionClass.getDeclaredConstructor(constructorParams);
-			Object instruction = instructionConstructor.newInstance(label, params);
-			if (!(instruction instanceof Instruction)) {
-				System.err.println(String.format("%s: %s.", errorMessage, "Invalid instruction class"));
-				return null;
+			
+			// If it inherits from Instruction then try to create it.
+			if (instructionClass.getSuperclass().equals(Instruction.class)) {
+				// Find the correct constructor.
+				Constructor<?> instructionConstructor = instructionClass.getDeclaredConstructor(paramTypes);
+				// Create an instance using the constructor.
+				Object newInstruction = instructionConstructor.newInstance(typedParameters);
+				// Return the created instruction
+				return (Instruction) newInstruction;
 			}
-			return (Instruction) instructionConstructor.newInstance(label, params);
 			
 		} catch (ClassNotFoundException e) {
 			
 			System.err.println(String.format("%s: %s.", errorMessage, "Unknown instruction"));
-			return null;
+			
+		} catch (NoSuchMethodException e) {
+			
+			System.err.println(String.format("%s: %s.", errorMessage, "Invalid parameters"));
 			
 		} catch (IllegalArgumentException e) {
 			
 			System.err.println(String.format("%s: %s.", errorMessage, e.getMessage()));
-			return null;
 			
 		} catch (InvocationTargetException e) {
 			
 			System.err.println(String.format("%s: %s.", errorMessage, e.getTargetException().getMessage()));
-			return null;
 			
 		} catch (ReflectiveOperationException e) {
 			
 			System.err.println(String.format("%s: %s.", errorMessage, e.getMessage()));
-			return null;
 		}
 		
+		return null;
+
 	}
 	
 	/*
@@ -171,11 +188,35 @@ public class Translator {
 	}
 
 	/*
-	 * Split a string into an array of strings delimiting on whitespace once any
-	 * leading and trailing whitespace is removed.
+	 * Parse all remaining tokens of line and attempt to coerce any that can be 
+	 * into Integers. Any that can not will be left as Strings. Returns an 
+	 * array of coerced parameters the first one being the label passed in.
 	 */
-	private String[] split() {
-		return line.trim().split("\\s");
+	private static Object[] getCoercedParameters(String label, String[] tokens) {
+		// If there are no tokens just return the label.
+		if (tokens == null) return new Object[] {label};
+		
+		// Otherwise return a an array of params starting with the label.
+		Object params[] = new Object[tokens.length + 1];
+		params[0] = label;
+		for (int i = 0; i < tokens.length; i++) {
+			String stringParam = tokens[i];
+			Integer integerParam;
+			try {
+				integerParam = Integer.parseInt(stringParam);
+				params[i + 1] = integerParam;
+			} catch (NumberFormatException e) {
+				params[i + 1] = stringParam;
+			}
+		}
+		return params;
+	}
+	
+	/*
+	 * A bit like getClass but treats Integers as ints. 
+	 */
+	private static Class<?> getType(Object obj) {
+		return obj.getClass().equals(Integer.class) ? Integer.TYPE : obj.getClass();
 	}
 	
 }
