@@ -148,7 +148,7 @@ public class Translator {
 			
 		} catch (NoSuchMethodException e) {
 			
-			System.err.println(String.format("%s: %s.", errorMessage, "Invalid parameters"));
+			System.err.println(String.format("%s: %s.", errorMessage, "Invalid parameter number or types"));
 			
 		} catch (IllegalArgumentException e) {
 			
