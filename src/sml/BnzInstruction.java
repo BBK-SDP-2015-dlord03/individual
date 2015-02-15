@@ -20,10 +20,6 @@ public class BnzInstruction extends Instruction {
 		this.op2 = op2;
 	}
 
-	public BnzInstruction(String label, String... params) {
-		super(label, params);
-	}
-
 	@Override
 	public void execute(Machine m) {
 		int value1 = getMachineRegister(m, op1);
@@ -40,13 +36,6 @@ public class BnzInstruction extends Instruction {
 	@Override
 	public String toString() {
 		return super.toString() + " if register " + op1 + " is not zero jump to " + op2;
-	}
-
-	@Override
-	protected void setParameters(String... params) {
-		assertCorrectParameterCount(params, 2);
-		this.op1 = parseIntParameter(params[0]);
-		this.op2 = params[1];
 	}
 
 }

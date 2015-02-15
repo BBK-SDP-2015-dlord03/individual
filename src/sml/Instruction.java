@@ -23,12 +23,6 @@ public abstract class Instruction {
 		this.opcode = op;
 	}
 
-	public Instruction(String l, String... params) {
-		this.label = l;
-		this.opcode = getOpCode();
-		setParameters(params);
-	}
-
 	// = the representation "label: opcode" of this Instruction
 
 	@Override
@@ -48,12 +42,6 @@ public abstract class Instruction {
 		return className.substring(0, classNameLength < 3 ? classNameLength : 3);
 	}
 
-	// Assign the parameters. Throw an exception for wrong values.
-
-	protected void setParameters(String... params){
-		// Default version does nothing. 
-	}
-	
 	// Safe way to get a machine register from machines with differing register counts.
 	
 	protected static int getMachineRegister(Machine m, int i) {
@@ -79,26 +67,6 @@ public abstract class Instruction {
 			System.err.format("Invalid register number %d.%n", i);
 		} catch (Exception e) {
 			System.err.format("Error setting register %d to %d: %s%n", i, v, e.getMessage());
-		}
-	}
-
-	// Utility helper method for checking parameter counts.
-	
-	protected static void assertCorrectParameterCount(String[] params, int expectedCount) {
-		int actualCount = params.length;
-		if (actualCount != expectedCount) {
-			String message = String.format("Incorrect number of arguments (expected %d, received %d)", expectedCount, actualCount);
-			throw new IllegalArgumentException(message);
-		}
-	}
-
-	// Utility helper method for parsing integer parameters.
-	
-	protected static int parseIntParameter(String string) {
-		try {
-			return Integer.parseInt(string);
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Invalid integer parameter '" + string + "'");
 		}
 	}
 

@@ -19,10 +19,6 @@ public class LinInstruction extends Instruction {
 		this.value = value;
 	}
 	
-	public LinInstruction(String label, String... params) {
-		super(label, params);
-	}
-
 	@Override
 	public void execute(Machine m) {
 		setMachineRegister(m, register, value);
@@ -31,13 +27,6 @@ public class LinInstruction extends Instruction {
 	@Override
 	public String toString() {
 		return super.toString() + " register " + register + " value is " + value;
-	}
-
-	@Override
-	protected void setParameters(String... params) {
-		assertCorrectParameterCount(params, 2);
-		this.register = parseIntParameter(params[0]);
-		this.value = parseIntParameter(params[1]);
 	}
 
 }

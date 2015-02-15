@@ -17,10 +17,6 @@ public class OutInstruction extends Instruction {
 		this.op1 = op1;
 	}
 	
-	public OutInstruction(String label, String... params) {
-		super(label, params);
-	}
-
 	@Override
 	public void execute(Machine m) {
 		System.out.println(getMachineRegister(m, op1));
@@ -29,12 +25,6 @@ public class OutInstruction extends Instruction {
 	@Override
 	public String toString() {
 		return super.toString() + " register " + op1;
-	}
-
-	@Override
-	protected void setParameters(String... params) {
-		assertCorrectParameterCount(params, 1);
-		this.op1 = parseIntParameter(params[0]);
 	}
 
 }

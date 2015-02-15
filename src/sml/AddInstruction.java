@@ -21,10 +21,6 @@ public class AddInstruction extends Instruction {
 		this.op2 = op2;
 	}
 
-	public AddInstruction(String label, String... params) {
-		super(label, params);
-	}
-
 	@Override
 	public void execute(Machine m) {
 		int value1 = getMachineRegister(m, op1);
@@ -35,14 +31,6 @@ public class AddInstruction extends Instruction {
 	@Override
 	public String toString() {
 		return super.toString() + " register " + op1 + " + register " + op2 + " to register " + result;
-	}
-
-	@Override
-	protected void setParameters(String... params) {
-		assertCorrectParameterCount(params, 3);
-		this.result = parseIntParameter(params[0]);
-		this.op1 = parseIntParameter(params[1]);
-		this.op2 = parseIntParameter(params[2]);
 	}
 
 }
